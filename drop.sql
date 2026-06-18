@@ -1,0 +1,1 @@
+drop database "ticketChecker"; drop table funcionario cascade; drop table ticket;
