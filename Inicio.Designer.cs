@@ -57,8 +57,8 @@
             // 
             this.menuPanel.ColumnCount = 3;
             this.menuPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.menuPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
-            this.menuPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33333F));
+            this.menuPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
+            this.menuPanel.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 33.33334F));
             this.menuPanel.Controls.Add(this.cadastrarFuncionario, 1, 1);
             this.menuPanel.Controls.Add(this.editarFuncionario, 1, 2);
             this.menuPanel.Controls.Add(this.labelMenu, 1, 0);
@@ -68,11 +68,10 @@
             this.menuPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.menuPanel.Location = new System.Drawing.Point(0, 0);
             this.menuPanel.Name = "menuPanel";
-            this.menuPanel.RowCount = 4;
+            this.menuPanel.RowCount = 3;
             this.menuPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.menuPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.menuPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
-            this.menuPanel.RowStyles.Add(new System.Windows.Forms.RowStyle());
+            this.menuPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
+            this.menuPanel.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 50F));
             this.menuPanel.Size = new System.Drawing.Size(784, 561);
             this.menuPanel.TabIndex = 1;
             // 
@@ -80,13 +79,14 @@
             // 
             this.editarFuncionario.Dock = System.Windows.Forms.DockStyle.Top;
             this.editarFuncionario.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editarFuncionario.Location = new System.Drawing.Point(264, 94);
+            this.editarFuncionario.Location = new System.Drawing.Point(264, 301);
             this.editarFuncionario.MinimumSize = new System.Drawing.Size(0, 50);
             this.editarFuncionario.Name = "editarFuncionario";
             this.editarFuncionario.Size = new System.Drawing.Size(255, 50);
             this.editarFuncionario.TabIndex = 1;
             this.editarFuncionario.Text = "Editar Funcionário";
             this.editarFuncionario.UseVisualStyleBackColor = true;
+            this.editarFuncionario.Click += new System.EventHandler(this.editarFuncionarioClickListener);
             // 
             // labelMenu
             // 
@@ -117,7 +117,7 @@
             // 
             this.editarTickets.Dock = System.Windows.Forms.DockStyle.Top;
             this.editarTickets.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.editarTickets.Location = new System.Drawing.Point(525, 94);
+            this.editarTickets.Location = new System.Drawing.Point(525, 301);
             this.editarTickets.MinimumSize = new System.Drawing.Size(0, 50);
             this.editarTickets.Name = "editarTickets";
             this.editarTickets.Size = new System.Drawing.Size(256, 50);
@@ -129,7 +129,7 @@
             // 
             this.gerarRelatorio.Dock = System.Windows.Forms.DockStyle.Top;
             this.gerarRelatorio.Font = new System.Drawing.Font("Microsoft Sans Serif", 15.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.gerarRelatorio.Location = new System.Drawing.Point(3, 94);
+            this.gerarRelatorio.Location = new System.Drawing.Point(3, 301);
             this.gerarRelatorio.MinimumSize = new System.Drawing.Size(0, 50);
             this.gerarRelatorio.Name = "gerarRelatorio";
             this.gerarRelatorio.Size = new System.Drawing.Size(255, 50);
