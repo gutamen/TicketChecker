@@ -1,6 +1,6 @@
 ﻿namespace TicketChecker.Telas
 {
-    partial class telaBusca
+    partial class TelaBuscaFuncionario
     {
         /// <summary>
         /// Required designer variable.
@@ -31,7 +31,7 @@
             this.panelBusca = new System.Windows.Forms.TableLayoutPanel();
             this.Buscar = new System.Windows.Forms.Button();
             this.textBoxBusca = new System.Windows.Forms.TextBox();
-            this.listBox1 = new System.Windows.Forms.ListBox();
+            this.listBoxFuncionario = new System.Windows.Forms.ListBox();
             this.panelBusca.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -42,7 +42,7 @@
             this.panelBusca.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 10F));
             this.panelBusca.Controls.Add(this.Buscar, 1, 1);
             this.panelBusca.Controls.Add(this.textBoxBusca, 0, 1);
-            this.panelBusca.Controls.Add(this.listBox1, 0, 0);
+            this.panelBusca.Controls.Add(this.listBoxFuncionario, 0, 0);
             this.panelBusca.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panelBusca.Location = new System.Drawing.Point(0, 0);
             this.panelBusca.Name = "panelBusca";
@@ -61,6 +61,7 @@
             this.Buscar.TabIndex = 0;
             this.Buscar.Text = "Buscar";
             this.Buscar.UseVisualStyleBackColor = true;
+            this.Buscar.Click += new System.EventHandler(this.buscarFuncionarioClickListener);
             // 
             // textBoxBusca
             // 
@@ -71,33 +72,23 @@
             this.textBoxBusca.Size = new System.Drawing.Size(519, 29);
             this.textBoxBusca.TabIndex = 1;
             // 
-            // listBox1
+            // listBoxFuncionario
             // 
-            this.listBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Items.AddRange(new object[] {
-            "dasd",
-            "asdasd",
-            "asdasd",
-            "cx",
-            "asdasd",
-            "asdasd",
-            "asdasd",
-            "cxxz",
-            "ascvbb",
-            "vcfgh"});
-            this.listBox1.Location = new System.Drawing.Point(3, 3);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.Size = new System.Drawing.Size(519, 320);
-            this.listBox1.TabIndex = 2;
+            this.listBoxFuncionario.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.listBoxFuncionario.FormattingEnabled = true;
+            this.listBoxFuncionario.Location = new System.Drawing.Point(3, 3);
+            this.listBoxFuncionario.Name = "listBoxFuncionario";
+            this.listBoxFuncionario.Size = new System.Drawing.Size(519, 320);
+            this.listBoxFuncionario.TabIndex = 2;
+            this.listBoxFuncionario.DoubleClick += new System.EventHandler(this.selectIndexBusca);
             // 
-            // telaBusca
+            // TelaBusca
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(584, 361);
             this.Controls.Add(this.panelBusca);
-            this.Name = "telaBusca";
+            this.Name = "TelaBusca";
             this.Text = "Busca";
             this.panelBusca.ResumeLayout(false);
             this.panelBusca.PerformLayout();
@@ -110,6 +101,6 @@
         private System.Windows.Forms.TableLayoutPanel panelBusca;
         private System.Windows.Forms.Button Buscar;
         private System.Windows.Forms.TextBox textBoxBusca;
-        private System.Windows.Forms.ListBox listBox1;
+        private System.Windows.Forms.ListBox listBoxFuncionario;
     }
 }

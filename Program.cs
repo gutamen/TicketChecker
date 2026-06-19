@@ -1,9 +1,11 @@
 ﻿using Npgsql;
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TicketChecker.Modelo;
 
 namespace TicketChecker
 {
@@ -22,24 +24,24 @@ namespace TicketChecker
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Inicio());
         }
-        public static long ObterProximoIdFuncionario()
+        public static int ObterProximoIdFuncionario()
         {
-            using (var conexao = new NpgsqlConnection(conexaoString))
+            using (NpgsqlConnection conexao = new NpgsqlConnection(conexaoString))
             {
                 conexao.Open();
 
                 string sql = "SELECT nextval('funcionario_id_seq');";
 
-                using (var cmd = new NpgsqlCommand(sql, conexao))
+                using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conexao))
                 {
-                    long proximoId = Convert.ToInt64(cmd.ExecuteScalar());
+                    int proximoId = Convert.ToInt32(cmd.ExecuteScalar());
                     return proximoId;
                 }
             }
         }
         public static void testarConexao()
         {
-            using (var connection = new NpgsqlConnection(conexaoString))
+            using (NpgsqlConnection connection = new NpgsqlConnection(conexaoString))
             {
                 try
                 {
@@ -47,7 +49,7 @@ namespace TicketChecker
                     Console.WriteLine("Conectado");
 
 
-                    using (var comando = new NpgsqlCommand("SELECT version()", connection))
+                    using (NpgsqlCommand comando = new NpgsqlCommand("SELECT version()", connection))
                     {
                         string version = comando.ExecuteScalar().ToString();
                         Console.WriteLine($"Versão: {version}");
@@ -68,9 +70,7 @@ namespace TicketChecker
         {
             foreach (char i in CPF.ToCharArray())
             {
-                Console.WriteLine(i);
-                int teste = i;
-                Console.WriteLine(teste);
+
                 if (i < 48 || i > 57)
                 {
                     return 2;
@@ -83,16 +83,16 @@ namespace TicketChecker
             }
 
             // Verifica se existe já no banco
-            using (var conexao = new NpgsqlConnection(conexaoString))
+            using (NpgsqlConnection conexao = new NpgsqlConnection(conexaoString))
             {
                 conexao.Open();
 
                 string sql = "SELECT cpf from funcionario where cpf='" + CPF + "';";
 
-                using (var comando = new NpgsqlCommand(sql, conexao))
+                using (NpgsqlCommand comando = new NpgsqlCommand(sql, conexao))
                 {
                     Object proximoId = comando.ExecuteScalar();
-                    if(proximoId != null)
+                    if (proximoId != null)
                     {
                         return 3;
                     }
@@ -104,7 +104,7 @@ namespace TicketChecker
 
         public static void insereFuncionarioBD(long id, string nome, string cpf, bool situacao, DateTime data)
         {
-            using (var conexao = new NpgsqlConnection(conexaoString))
+            using (NpgsqlConnection conexao = new NpgsqlConnection(conexaoString))
             {
                 conexao.Open();
 
@@ -112,17 +112,121 @@ namespace TicketChecker
                     INSERT INTO funcionario (id, nome, cpf, situacao, dataalteracao) 
                     VALUES (@id, @nome, @cpf, @situacao, @dataalteracao);";
 
-                using (var comando = new NpgsqlCommand(sql, conexao))
+                using (NpgsqlCommand comando = new NpgsqlCommand(sql, conexao))
                 {
                     comando.Parameters.AddWithValue("@id", id);
                     comando.Parameters.AddWithValue("@nome", nome);
                     comando.Parameters.AddWithValue("@cpf", cpf);
-                    comando.Parameters.AddWithValue("@situacao", situacao? 'A' : 'I');
+                    comando.Parameters.AddWithValue("@situacao", situacao ? 'A' : 'I');
                     comando.Parameters.AddWithValue("@dataalteracao", data);
 
                     comando.ExecuteScalar();
                 }
             }
+        }
+
+        public static void alteraFuncionarioBD(long id, string nome, string cpf, bool situacao)
+        {
+            try
+            {
+                using (NpgsqlConnection conexao = new NpgsqlConnection(conexaoString))
+                {
+                    conexao.Open();
+
+                    string sql = @"
+                        UPDATE funcionario 
+                            SET nome = @nome,
+                                cpf = @cpf,
+                                situacao = @situacao
+                            WHERE id = @id;";
+
+                    using (NpgsqlCommand comando = new NpgsqlCommand(sql, conexao))
+                    {
+                        comando.Parameters.AddWithValue("@id", id);
+                        comando.Parameters.AddWithValue("@nome", nome);
+                        comando.Parameters.AddWithValue("@cpf", cpf);
+                        comando.Parameters.AddWithValue("@situacao", situacao ? 'A' : 'I');
+
+                        int rows = comando.ExecuteNonQuery();
+
+                        if (rows > 0)
+                        {
+                            MessageBox.Show("Registro atualizado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Nenhum registro foi atualizado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show($"Erro ao atualizar: {e.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+        }
+
+        public static List<Funcionario> buscaFuncionariosNome(String nome)
+        {
+            List<Funcionario> retorno = new List<Funcionario>();
+
+            using (NpgsqlConnection conexao = new NpgsqlConnection(conexaoString))
+            {
+                conexao.Open();
+
+                string sql = @"
+                    SELECT id, nome 
+                        FROM funcionario 
+                        WHERE nome ILIKE @nomeBusca
+                        ORDER BY nome;";
+
+                using (NpgsqlCommand comando = new NpgsqlCommand(sql, conexao))
+                {
+                    
+                    comando.Parameters.AddWithValue("@nomeBusca", "%" + nome + "%");
+
+                    using (var reader = comando.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            retorno.Add(new Funcionario((int)reader["id"], (string)reader["nome"]));
+                        }
+                    }
+                }
+            }
+
+
+            return retorno;
+        }
+
+        public static Funcionario buscaFuncinarioPorID(int id)
+        {
+            using (NpgsqlConnection conexao = new NpgsqlConnection(conexaoString))
+            {
+                conexao.Open();
+
+                string sql = @"
+                    SELECT id, nome, cpf, situacao, dataalteracao 
+                        FROM funcionario 
+                        WHERE id=@id;";
+
+                using (NpgsqlCommand comando = new NpgsqlCommand(sql, conexao))
+                {
+
+                    comando.Parameters.AddWithValue("@id", id);
+
+                    using (var reader = comando.ExecuteReader())
+                    {
+                        reader.Read();
+                        return new Funcionario((int)reader["id"], (string)reader["nome"], (string)reader["cpf"], ((string)reader["situacao"]).ToCharArray()[0], (DateTime)reader["dataalteracao"]);
+                    }
+                }
+            }
+
+            return null;
         }
 
     }

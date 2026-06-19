@@ -8,14 +8,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using Npgsql;
+using TicketChecker.Modelo;
 
 namespace TicketChecker.Telas
 {
-    public partial class telaManipulacaoFuncionario : Form
+    public partial class TelaManipulacaoFuncionario : Form
     {
         bool cadastro = false;
-        private long idTemporario;
-        public telaManipulacaoFuncionario(String nomeTela, bool cadastro = false)
+        private int idTemporario = 0;
+        private Funcionario funcionario;
+        private TelaBuscaFuncionario buscaFuncionario;
+        public TelaManipulacaoFuncionario(String nomeTela, bool cadastro = false)
         {
 
             this.cadastro = cadastro;
@@ -27,7 +30,7 @@ namespace TicketChecker.Telas
                 this.checkBoxAtivo.Checked = true;
                 this.checkBoxAtivo.Enabled = false;
                 this.textBoxData.Text = DateTime.Now.ToString();
-                
+
                 // Funciona para saber o ID na criação do funcionário, mas pode incrementar o id sem precisar
                 idTemporario = Program.ObterProximoIdFuncionario();
                 this.textBoxId.Text = idTemporario.ToString();
@@ -50,16 +53,16 @@ namespace TicketChecker.Telas
         {
             if (cadastro)
             {
-                switch(Program.VerificaCPF(this.textBoxCPF.Text.ToString()))
+                switch (Program.VerificaCPF(this.textBoxCPF.Text.ToString()))
                 {
                     case 1:
-                        MessageBox.Show("CPF com quantidade de digitos invalido.");
+                        MessageBox.Show("CPF com quantidade de digitos invalido.", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     case 2:
-                        MessageBox.Show("Somente números são permitidos no CPF.");
+                        MessageBox.Show("Somente números são permitidos no CPF.", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     case 3:
-                        MessageBox.Show("Já existe esse CPF cadastrado.");
+                        MessageBox.Show("Já existe esse CPF cadastrado.", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                 }
                 if (this.textBoxNome.Text.Length <= 0)
@@ -69,11 +72,57 @@ namespace TicketChecker.Telas
                 }
 
                 Program.insereFuncionarioBD(this.idTemporario, this.textBoxNome.Text, this.textBoxCPF.Text, checkBoxAtivo.Checked, DateTime.Parse(this.textBoxData.Text));
-                
             }
             else
             {
+                switch (Program.VerificaCPF(this.textBoxCPF.Text.ToString()))
+                {
+                    case 1:
+                        MessageBox.Show("CPF com quantidade de digitos invalido.", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    case 2:
+                        MessageBox.Show("Somente números são permitidos no CPF.", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    case 3:
+                        if (funcionario.CPF != this.textBoxCPF.Text.ToString())
+                        {
+                            MessageBox.Show("Já existe esse CPF cadastrado.", "Alerta", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                        break; 
+                }
 
+                if (this.textBoxNome.Text.Length <= 0)
+                {
+                    MessageBox.Show("Nenhum nome inserido");
+                    return;
+                }
+
+                Program.alteraFuncionarioBD(this.idTemporario, this.textBoxNome.Text, this.textBoxCPF.Text, checkBoxAtivo.Checked);
+                
+            }
+            this.Close();
+
+        }
+
+        private void buscarFuncionarioClickListener(object sender, EventArgs e)
+        {
+            buscaFuncionario = new TelaBuscaFuncionario(this);
+            buscaFuncionario.ShowDialog();
+        }
+
+        private void onActivateForm(object sender, EventArgs e)
+        {
+            if (this.Enabled && !cadastro)
+            {
+                idTemporario = buscaFuncionario.funcionarioSelecionado;
+                if (idTemporario == 0) this.Close();
+                funcionario = Program.buscaFuncinarioPorID(idTemporario);
+                this.textBoxId.Text = funcionario.id.ToString();
+                this.textBoxNome.Text = funcionario.nome;
+                this.textBoxCPF.Text = funcionario.CPF;
+                this.textBoxData.Text = DateTime.Now.ToString();
+                this.checkBoxAtivo.Checked = funcionario.situacao == 'A' ? true : false;
             }
         }
     }

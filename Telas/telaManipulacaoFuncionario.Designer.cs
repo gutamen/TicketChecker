@@ -1,6 +1,6 @@
 ﻿namespace TicketChecker.Telas
 {
-    partial class telaManipulacaoFuncionario
+    partial class TelaManipulacaoFuncionario
     {
         /// <summary>
         /// Required designer variable.
@@ -85,6 +85,7 @@
             this.textBoxCPF.Dock = System.Windows.Forms.DockStyle.Fill;
             this.textBoxCPF.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.textBoxCPF.Location = new System.Drawing.Point(264, 206);
+            this.textBoxCPF.MaxLength = 11;
             this.textBoxCPF.Name = "textBoxCPF";
             this.textBoxCPF.Size = new System.Drawing.Size(255, 29);
             this.textBoxCPF.TabIndex = 1;
@@ -97,7 +98,7 @@
             this.textBoxId.Location = new System.Drawing.Point(264, 28);
             this.textBoxId.MaximumSize = new System.Drawing.Size(40, 4);
             this.textBoxId.Name = "textBoxId";
-            this.textBoxId.Size = new System.Drawing.Size(40, 4);
+            this.textBoxId.Size = new System.Drawing.Size(40, 29);
             this.textBoxId.TabIndex = 0;
             // 
             // labelMenuFuncionario
@@ -236,15 +237,17 @@
             this.buttonBuscar.Text = "Buscar";
             this.buttonBuscar.UseVisualStyleBackColor = true;
             this.buttonBuscar.Visible = false;
+            this.buttonBuscar.Click += new System.EventHandler(this.buscarFuncionarioClickListener);
             // 
-            // telaManipulacaoFuncionario
+            // TelaManipulacaoFuncionario
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 561);
             this.Controls.Add(this.painelCadastroFuncionario);
-            this.Name = "telaManipulacaoFuncionario";
+            this.Name = "TelaManipulacaoFuncionario";
             this.Text = "Funcionário";
+            this.EnabledChanged += new System.EventHandler(this.onActivateForm);
             this.painelCadastroFuncionario.ResumeLayout(false);
             this.painelCadastroFuncionario.PerformLayout();
             this.ResumeLayout(false);

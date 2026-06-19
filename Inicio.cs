@@ -24,23 +24,23 @@ namespace TicketChecker
 
         private void cadastrarFuncionarioClickListener(object sender, EventArgs e)
         {
-            telaManipulacaoFuncionario cadastro = new telaManipulacaoFuncionario("Cadastrar Funcionário", true);
+            TelaManipulacaoFuncionario cadastro = new TelaManipulacaoFuncionario("Cadastrar Funcionário", true);
             cadastro.ShowDialog();
         }
 
         private void editarFuncionarioClickListener(object sender, EventArgs e)
         {
-            telaManipulacaoFuncionario edicao = new telaManipulacaoFuncionario("Editar Funcionário", false);
+            TelaManipulacaoFuncionario edicao = new TelaManipulacaoFuncionario("Editar Funcionário", false);
             edicao.ShowDialog();
         }
         private void editarTicketClickListener(object sender, EventArgs e)
         {
-            telaManipulacaoTicket edicao = new telaManipulacaoTicket("Editar Ticket", false);
+            TelaManipulacaoTicket edicao = new TelaManipulacaoTicket("Editar Ticket", false);
             edicao.ShowDialog();
         }
         private void cadastraTicketClickListener(object sender, EventArgs e)
         {
-            telaManipulacaoTicket cadastro = new telaManipulacaoTicket("Cadastrar Ticket", true);
+            TelaManipulacaoTicket cadastro = new TelaManipulacaoTicket("Cadastrar Ticket", true);
             cadastro.ShowDialog();
         }
         

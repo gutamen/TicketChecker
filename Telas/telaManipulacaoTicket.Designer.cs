@@ -1,6 +1,6 @@
 ﻿namespace TicketChecker.Telas
 {
-    partial class telaManipulacaoTicket
+    partial class TelaManipulacaoTicket
     {
         /// <summary>
         /// Required designer variable.

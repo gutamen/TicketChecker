@@ -7,14 +7,16 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TicketChecker.Modelo;
 
 namespace TicketChecker.Telas
 {
     
-    public partial class telaManipulacaoTicket: Form
+    public partial class TelaManipulacaoTicket: Form
     {
         bool cadastro = false;
-        public telaManipulacaoTicket(String nomeTela, bool cadastro = false)
+        private Funcionario funcionario;
+        public TelaManipulacaoTicket(String nomeTela, bool cadastro = false)
         {
 
             this.cadastro = cadastro;
@@ -37,7 +39,7 @@ namespace TicketChecker.Telas
 
         private void buscarFuncionarioClickListener(object sender, EventArgs e)
         {
-            telaBusca buscarFuncionario = new telaBusca();
+            TelaBuscaFuncionario buscarFuncionario = new TelaBuscaFuncionario(this);
             buscarFuncionario.ShowDialog();
         }
     }
