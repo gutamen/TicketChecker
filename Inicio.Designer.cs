@@ -112,6 +112,7 @@
             this.cadastrarTickets.TabIndex = 3;
             this.cadastrarTickets.Text = "Cadastrar Tickets";
             this.cadastrarTickets.UseVisualStyleBackColor = true;
+            this.cadastrarTickets.Click += new System.EventHandler(this.cadastraTicketClickListener);
             // 
             // editarTickets
             // 
@@ -124,6 +125,7 @@
             this.editarTickets.TabIndex = 4;
             this.editarTickets.Text = "Editar Tickets";
             this.editarTickets.UseVisualStyleBackColor = true;
+            this.editarTickets.Click += new System.EventHandler(this.editarTicketClickListener);
             // 
             // gerarRelatorio
             // 
@@ -143,7 +145,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(784, 561);
             this.Controls.Add(this.menuPanel);
+            this.MaximumSize = new System.Drawing.Size(800, 600);
+            this.MinimumSize = new System.Drawing.Size(800, 600);
             this.Name = "Inicio";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Menu";
             this.menuPanel.ResumeLayout(false);
             this.menuPanel.PerformLayout();

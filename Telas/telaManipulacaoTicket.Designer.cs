@@ -35,16 +35,16 @@
             this.labelFuncionario = new System.Windows.Forms.Label();
             this.textBoxFuncionarioID = new System.Windows.Forms.TextBox();
             this.subpanelFuncionario = new System.Windows.Forms.TableLayoutPanel();
+            this.buttonBuscaFuncionario = new System.Windows.Forms.Button();
+            this.textBoxFuncionarioNome = new System.Windows.Forms.TextBox();
             this.labelQuatidade = new System.Windows.Forms.Label();
             this.upDownQuantidade = new System.Windows.Forms.NumericUpDown();
             this.labelAtivo = new System.Windows.Forms.Label();
             this.checkBoxAtivo = new System.Windows.Forms.CheckBox();
             this.textBox3 = new System.Windows.Forms.TextBox();
-            this.label6 = new System.Windows.Forms.Label();
+            this.labelData = new System.Windows.Forms.Label();
             this.buttonRetroceder = new System.Windows.Forms.Button();
             this.buttonConfirmar = new System.Windows.Forms.Button();
-            this.buttonBuscaFuncionario = new System.Windows.Forms.Button();
-            this.textBoxFuncionarioNome = new System.Windows.Forms.TextBox();
             this.ticketPanel.SuspendLayout();
             this.subpanelFuncionario.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.upDownQuantidade)).BeginInit();
@@ -67,7 +67,7 @@
             this.ticketPanel.Controls.Add(this.labelAtivo, 0, 4);
             this.ticketPanel.Controls.Add(this.checkBoxAtivo, 1, 4);
             this.ticketPanel.Controls.Add(this.textBox3, 1, 5);
-            this.ticketPanel.Controls.Add(this.label6, 0, 5);
+            this.ticketPanel.Controls.Add(this.labelData, 0, 5);
             this.ticketPanel.Controls.Add(this.buttonRetroceder, 0, 6);
             this.ticketPanel.Controls.Add(this.buttonConfirmar, 2, 6);
             this.ticketPanel.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -150,9 +150,28 @@
             this.subpanelFuncionario.Name = "subpanelFuncionario";
             this.subpanelFuncionario.RowCount = 1;
             this.subpanelFuncionario.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Percent, 100F));
-            this.subpanelFuncionario.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+            this.subpanelFuncionario.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 83F));
             this.subpanelFuncionario.Size = new System.Drawing.Size(256, 83);
             this.subpanelFuncionario.TabIndex = 5;
+            // 
+            // buttonBuscaFuncionario
+            // 
+            this.buttonBuscaFuncionario.Dock = System.Windows.Forms.DockStyle.Left;
+            this.buttonBuscaFuncionario.Location = new System.Drawing.Point(131, 3);
+            this.buttonBuscaFuncionario.Name = "buttonBuscaFuncionario";
+            this.buttonBuscaFuncionario.Size = new System.Drawing.Size(75, 77);
+            this.buttonBuscaFuncionario.TabIndex = 0;
+            this.buttonBuscaFuncionario.Text = "Buscar";
+            this.buttonBuscaFuncionario.UseVisualStyleBackColor = true;
+            this.buttonBuscaFuncionario.Click += new System.EventHandler(this.buscarFuncionarioClickListener);
+            // 
+            // textBoxFuncionarioNome
+            // 
+            this.textBoxFuncionarioNome.Dock = System.Windows.Forms.DockStyle.Top;
+            this.textBoxFuncionarioNome.Location = new System.Drawing.Point(3, 3);
+            this.textBoxFuncionarioNome.Name = "textBoxFuncionarioNome";
+            this.textBoxFuncionarioNome.Size = new System.Drawing.Size(122, 20);
+            this.textBoxFuncionarioNome.TabIndex = 1;
             // 
             // labelQuatidade
             // 
@@ -210,16 +229,16 @@
             this.textBox3.Size = new System.Drawing.Size(255, 29);
             this.textBox3.TabIndex = 11;
             // 
-            // label6
+            // labelData
             // 
-            this.label6.AutoSize = true;
-            this.label6.Dock = System.Windows.Forms.DockStyle.Right;
-            this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(113, 381);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(145, 89);
-            this.label6.TabIndex = 12;
-            this.label6.Text = "Data de Entrega";
+            this.labelData.AutoSize = true;
+            this.labelData.Dock = System.Windows.Forms.DockStyle.Right;
+            this.labelData.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelData.Location = new System.Drawing.Point(113, 381);
+            this.labelData.Name = "labelData";
+            this.labelData.Size = new System.Drawing.Size(145, 89);
+            this.labelData.TabIndex = 12;
+            this.labelData.Text = "Data de Entrega";
             // 
             // buttonRetroceder
             // 
@@ -231,6 +250,7 @@
             this.buttonRetroceder.TabIndex = 13;
             this.buttonRetroceder.Text = "Retroceder";
             this.buttonRetroceder.UseVisualStyleBackColor = true;
+            this.buttonRetroceder.Click += new System.EventHandler(this.retornarClickListener);
             // 
             // buttonConfirmar
             // 
@@ -242,24 +262,6 @@
             this.buttonConfirmar.TabIndex = 14;
             this.buttonConfirmar.Text = "Confirmar";
             this.buttonConfirmar.UseVisualStyleBackColor = true;
-            // 
-            // buttonBuscaFuncionario
-            // 
-            this.buttonBuscaFuncionario.Dock = System.Windows.Forms.DockStyle.Left;
-            this.buttonBuscaFuncionario.Location = new System.Drawing.Point(131, 3);
-            this.buttonBuscaFuncionario.Name = "buttonBuscaFuncionario";
-            this.buttonBuscaFuncionario.Size = new System.Drawing.Size(75, 77);
-            this.buttonBuscaFuncionario.TabIndex = 0;
-            this.buttonBuscaFuncionario.Text = "Buscar";
-            this.buttonBuscaFuncionario.UseVisualStyleBackColor = true;
-            // 
-            // textBoxFuncionarioNome
-            // 
-            this.textBoxFuncionarioNome.Dock = System.Windows.Forms.DockStyle.Top;
-            this.textBoxFuncionarioNome.Location = new System.Drawing.Point(3, 3);
-            this.textBoxFuncionarioNome.Name = "textBoxFuncionarioNome";
-            this.textBoxFuncionarioNome.Size = new System.Drawing.Size(122, 20);
-            this.textBoxFuncionarioNome.TabIndex = 1;
             // 
             // telaManipulacaoTicket
             // 
@@ -292,7 +294,7 @@
         private System.Windows.Forms.Label labelAtivo;
         private System.Windows.Forms.CheckBox checkBoxAtivo;
         private System.Windows.Forms.TextBox textBox3;
-        private System.Windows.Forms.Label label6;
+        private System.Windows.Forms.Label labelData;
         private System.Windows.Forms.Button buttonRetroceder;
         private System.Windows.Forms.Button buttonConfirmar;
         private System.Windows.Forms.Button buttonBuscaFuncionario;

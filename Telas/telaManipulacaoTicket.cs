@@ -22,13 +22,23 @@ namespace TicketChecker.Telas
             this.Text = nomeTela;
             if (cadastro)
             {
-                
+                this.labelMenuTicket.Text = "Insira os dados";
             }
             else
             {
-                
+                this.labelMenuTicket.Text = "Edite os dados";
             }
 
+        }
+        private void retornarClickListener(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void buscarFuncionarioClickListener(object sender, EventArgs e)
+        {
+            telaBusca buscarFuncionario = new telaBusca();
+            buscarFuncionario.ShowDialog();
         }
     }
 }

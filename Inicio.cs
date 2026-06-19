@@ -8,15 +8,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TicketChecker.Telas;
+using Npgsql;
 
 namespace TicketChecker
 {
     public partial class Inicio: Form
     {
-
         
+
         public Inicio()
         {
+            //testarConexao();
             InitializeComponent();
         }
 
@@ -31,6 +33,17 @@ namespace TicketChecker
             telaManipulacaoFuncionario edicao = new telaManipulacaoFuncionario("Editar Funcionário", false);
             edicao.ShowDialog();
         }
+        private void editarTicketClickListener(object sender, EventArgs e)
+        {
+            telaManipulacaoTicket edicao = new telaManipulacaoTicket("Editar Ticket", false);
+            edicao.ShowDialog();
+        }
+        private void cadastraTicketClickListener(object sender, EventArgs e)
+        {
+            telaManipulacaoTicket cadastro = new telaManipulacaoTicket("Cadastrar Ticket", true);
+            cadastro.ShowDialog();
+        }
+        
 
     }
 }

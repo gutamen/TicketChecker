@@ -42,6 +42,7 @@
             this.labelModificacao = new System.Windows.Forms.Label();
             this.buttonRetornar = new System.Windows.Forms.Button();
             this.buttonConfirmar = new System.Windows.Forms.Button();
+            this.buttonBuscar = new System.Windows.Forms.Button();
             this.painelCadastroFuncionario.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -64,6 +65,7 @@
             this.painelCadastroFuncionario.Controls.Add(this.labelModificacao, 0, 5);
             this.painelCadastroFuncionario.Controls.Add(this.buttonRetornar, 0, 6);
             this.painelCadastroFuncionario.Controls.Add(this.buttonConfirmar, 2, 6);
+            this.painelCadastroFuncionario.Controls.Add(this.buttonBuscar, 2, 1);
             this.painelCadastroFuncionario.Dock = System.Windows.Forms.DockStyle.Fill;
             this.painelCadastroFuncionario.Location = new System.Drawing.Point(0, 0);
             this.painelCadastroFuncionario.Name = "painelCadastroFuncionario";
@@ -95,7 +97,7 @@
             this.textBoxId.Location = new System.Drawing.Point(264, 28);
             this.textBoxId.MaximumSize = new System.Drawing.Size(40, 4);
             this.textBoxId.Name = "textBoxId";
-            this.textBoxId.Size = new System.Drawing.Size(40, 29);
+            this.textBoxId.Size = new System.Drawing.Size(40, 4);
             this.textBoxId.TabIndex = 0;
             // 
             // labelMenuFuncionario
@@ -135,11 +137,11 @@
             this.labelCPF.AutoSize = true;
             this.labelCPF.Dock = System.Windows.Forms.DockStyle.Right;
             this.labelCPF.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.labelCPF.Location = new System.Drawing.Point(211, 203);
+            this.labelCPF.Location = new System.Drawing.Point(38, 203);
             this.labelCPF.Name = "labelCPF";
-            this.labelCPF.Size = new System.Drawing.Size(47, 89);
+            this.labelCPF.Size = new System.Drawing.Size(220, 89);
             this.labelCPF.TabIndex = 5;
-            this.labelCPF.Text = "CPF";
+            this.labelCPF.Text = "CPF (Somente números)";
             // 
             // labelID
             // 
@@ -220,6 +222,20 @@
             this.buttonConfirmar.TabIndex = 12;
             this.buttonConfirmar.Text = "Confirmar";
             this.buttonConfirmar.UseVisualStyleBackColor = true;
+            this.buttonConfirmar.Click += new System.EventHandler(this.confirmarClickListener);
+            // 
+            // buttonBuscar
+            // 
+            this.buttonBuscar.Dock = System.Windows.Forms.DockStyle.Left;
+            this.buttonBuscar.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonBuscar.Location = new System.Drawing.Point(525, 28);
+            this.buttonBuscar.MinimumSize = new System.Drawing.Size(100, 0);
+            this.buttonBuscar.Name = "buttonBuscar";
+            this.buttonBuscar.Size = new System.Drawing.Size(100, 83);
+            this.buttonBuscar.TabIndex = 13;
+            this.buttonBuscar.Text = "Buscar";
+            this.buttonBuscar.UseVisualStyleBackColor = true;
+            this.buttonBuscar.Visible = false;
             // 
             // telaManipulacaoFuncionario
             // 
@@ -251,5 +267,6 @@
         private System.Windows.Forms.Label labelModificacao;
         private System.Windows.Forms.Button buttonRetornar;
         private System.Windows.Forms.Button buttonConfirmar;
+        private System.Windows.Forms.Button buttonBuscar;
     }
 }

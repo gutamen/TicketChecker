@@ -1,4 +1,6 @@
 CREATE DATABASE "ticketChecker";
+
+\c "ticketChecker"
   
 -- Tabela Funcionario
 CREATE TABLE funcionario (
@@ -11,7 +13,6 @@ CREATE TABLE funcionario (
     	CONSTRAINT verificaFuncionarioSituacao CHECK (situacao IN ('A', 'I')),	-- situação ou ativo ou inativo
     	CONSTRAINT verificaFuncionarioCPF CHECK (CPF ~ '^[0-9]{11}$')		-- expressão regular para formato do CPF
 );
-
 
 -- Tabela Ticket, chave estrangeira id e situação do funcionário
 -- Imagino que tickets que situação de ativiade do ticket tenha haver com a do funcionário
@@ -32,11 +33,6 @@ CREATE TABLE ticket (
 );
 
 
--- Gatilho para atualizar a data quando a tabela funcionário é modificada
-CREATE TRIGGER gatilhoAlteracaoFuncionario
-    	BEFORE UPDATE ON funcionario
-    	FOR EACH ROW
-    	EXECUTE FUNCTION gatilhoAlteracaoFuncionario();
 
 -- Função de ajuste de alteração com cuidado sobre a alteração dos tickets
 CREATE OR REPLACE FUNCTION gatilhoAlteracaoFuncionario()
@@ -56,6 +52,11 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+-- Gatilho para atualizar a data quando a tabela funcionário é modificada
+CREATE TRIGGER gatilhoAlteracaoFuncionario
+    	BEFORE UPDATE ON funcionario
+    	FOR EACH ROW
+    	EXECUTE FUNCTION gatilhoAlteracaoFuncionario();
 
 -- Função para bloquear criação de novas entradas para funcionários inativos
 CREATE OR REPLACE FUNCTION bloqueioTicketFuncionarioInativo()
