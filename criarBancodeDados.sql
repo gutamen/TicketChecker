@@ -8,7 +8,7 @@ CREATE TABLE funcionario (
     	nome            VARCHAR(200) 	NOT NULL,
     	CPF             VARCHAR(11)  	UNIQUE NOT NULL,
     	situacao        CHAR(1)      	NOT NULL DEFAULT 'A',			-- criação sempre como ativo
-    	dataAlteracao  TIMESTAMP    	NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    	dataAlteracao  	TIMESTAMP    	NOT NULL DEFAULT CURRENT_TIMESTAMP,
     
     	CONSTRAINT verificaFuncionarioSituacao CHECK (situacao IN ('A', 'I')),	-- situação ou ativo ou inativo
     	CONSTRAINT verificaFuncionarioCPF CHECK (CPF ~ '^[0-9]{11}$')		-- expressão regular para formato do CPF
@@ -17,11 +17,11 @@ CREATE TABLE funcionario (
 -- Tabela Ticket, chave estrangeira id e situação do funcionário
 -- Imagino que tickets que situação de ativiade do ticket tenha haver com a do funcionário
 CREATE TABLE ticket (
-    	id           	SERIAL PRIMARY KEY,
-    	idFuncionario	INTEGER NOT NULL,
-    	quantidade	INTEGER NOT NULL CHECK (quantidade > 0),
-    	situacao   	CHAR(1) NOT NULL DEFAULT 'A',
-    	dataEntrega  	DATE NOT NULL,
+    	id           	SERIAL 		PRIMARY KEY,
+    	idFuncionario	INTEGER 	NOT NULL,
+    	quantidade	INTEGER 	NOT NULL CHECK (quantidade > 0),
+    	situacao   	CHAR(1) 	NOT NULL DEFAULT 'A',
+    	dataEntrega  	TIMESTAMP 	NOT NULL DEFAULT CURRENT_TIMESTAMP,
     
     	CONSTRAINT chaveIdTicketFuncionario
         	FOREIGN KEY (idFuncionario) 

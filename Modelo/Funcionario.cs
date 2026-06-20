@@ -21,6 +21,13 @@ namespace TicketChecker.Modelo
             this.nome = nome;
         }
 
+        public Funcionario(int id, string nome, string cpf)
+        {
+            this.id = id;
+            this.nome = nome;
+            this.CPF = cpf;
+        }
+
         public Funcionario(int id, string nome, string cpf, char situacao, DateTime data)
         {
             this.id = id;

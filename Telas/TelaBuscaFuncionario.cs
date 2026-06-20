@@ -16,22 +16,22 @@ namespace TicketChecker.Telas
     {
         private List<Funcionario> listaFuncionario;
         private Form tela;
-        public int funcionarioSelecionado;
+        public int funcionarioSelecionado = 0;
         public TelaBuscaFuncionario(Form tela)
         {
-            InitializeComponent();
             this.tela = tela;
             tela.Enabled = false;
+            InitializeComponent();
         }
 
         private void buscarFuncionarioClickListener(object sender, EventArgs e)
         {
-            this.listaFuncionario = Program.buscaFuncionariosNome(this.textBoxBusca.Text);
+            this.listaFuncionario = Program.buscaFuncionariosNomeBD(this.textBoxBusca.Text);
             
             List<String> temp = new List<string>();
             foreach (Funcionario c in listaFuncionario)
             {
-                temp.Add(c.nome);
+                temp.Add(c.nome + " \tCPF:" + c.CPF);
             }
 
             this.listBoxFuncionario.DataSource = temp;
@@ -44,8 +44,21 @@ namespace TicketChecker.Telas
                 return;
             }
             this.funcionarioSelecionado = listaFuncionario.ElementAt(this.listBoxFuncionario.SelectedIndex).id;
-            tela.Enabled = true;
+            this.tela.Enabled = true;
             this.Close();
         }
+
+
+        private void onClose(object sender, FormClosedEventArgs e)
+        {
+            if (tela.GetType() == typeof(TelaManipulacaoTicket))
+            {
+                this.tela.Enabled = true;
+                return;
+            }
+            if (!this.tela.Enabled) this.tela.Close();
+        }
+
+        
     }
 }

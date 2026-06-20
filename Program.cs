@@ -24,7 +24,7 @@ namespace TicketChecker
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Inicio());
         }
-        public static int ObterProximoIdFuncionario()
+        public static int ObterProximoIdFuncionarioBD()
         {
             using (NpgsqlConnection conexao = new NpgsqlConnection(conexaoString))
             {
@@ -39,7 +39,88 @@ namespace TicketChecker
                 }
             }
         }
-        public static void testarConexao()
+
+        public static int ObterProximoIdTicketBD()
+        {
+            using (NpgsqlConnection conexao = new NpgsqlConnection(conexaoString))
+            {
+                conexao.Open();
+
+                string sql = "SELECT nextval('ticket_id_seq');";
+
+                using (NpgsqlCommand cmd = new NpgsqlCommand(sql, conexao))
+                {
+                    int proximoId = Convert.ToInt32(cmd.ExecuteScalar());
+                    return proximoId;
+                }
+            }
+        }
+
+        public static List<Ticket> buscaTicketsPorIdFuncionarioBD(int idFuncionario)
+        {
+            List<Ticket> retorno = new List<Ticket>();
+            
+            using (NpgsqlConnection conexao = new NpgsqlConnection(conexaoString))
+            {
+                conexao.Open();
+
+                string sql = @"
+                    SELECT id, idfuncionario, quantidade, situacao, dataEntrega  
+                        FROM ticket 
+                        WHERE idFuncionario=@idFuncionario;";
+
+                using (NpgsqlCommand comando = new NpgsqlCommand(sql, conexao))
+                {
+
+                    comando.Parameters.AddWithValue("@idFuncionario", idFuncionario);
+
+                    using (var reader = comando.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            retorno.Add(new Ticket((int)reader["id"], (int)reader["idFuncionario"], (int)reader["quantidade"], ((string)reader["situacao"]).ToCharArray()[0],
+                                (DateTime)reader["dataEntrega"]));
+                        }
+                    }
+                }
+            }
+
+
+            return retorno;
+        }
+
+
+        public static List<Ticket> buscaTicketsBD()
+        {
+            List<Ticket> retorno = new List<Ticket>();
+
+            using (NpgsqlConnection conexao = new NpgsqlConnection(conexaoString))
+            {
+                conexao.Open();
+
+                string sql = @"
+                    SELECT id, idfuncionario, quantidade, situacao, dataEntrega  
+                        FROM ticket;"; 
+
+                using (NpgsqlCommand comando = new NpgsqlCommand(sql, conexao))
+                {
+
+                    using (var reader = comando.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            retorno.Add(new Ticket((int)reader["id"], (int)reader["idFuncionario"], (int)reader["quantidade"], ((string)reader["situacao"]).ToCharArray()[0],
+                                (DateTime)reader["dataEntrega"]));
+                        }
+                    }
+                }
+            }
+
+
+            return retorno;
+        }
+
+        public static void testarConexaoBD()
         {
             using (NpgsqlConnection connection = new NpgsqlConnection(conexaoString))
             {
@@ -125,6 +206,29 @@ namespace TicketChecker
             }
         }
 
+        public static void insereTicketBD(int id, int idFuncionario, int quantidade, bool situacao, DateTime data)
+        {
+            using (NpgsqlConnection conexao = new NpgsqlConnection(conexaoString))
+            {
+                conexao.Open();
+
+                string sql = @"
+                    INSERT INTO ticket (id, idfuncionario, quantidade, situacao, dataEntrega) 
+                    VALUES (@id, @idfuncionario, @quantidade, @situacao, @dataEntrega);";
+
+                using (NpgsqlCommand comando = new NpgsqlCommand(sql, conexao))
+                {
+                    comando.Parameters.AddWithValue("@id", id);
+                    comando.Parameters.AddWithValue("@idfuncionario", idFuncionario);
+                    comando.Parameters.AddWithValue("@quantidade", quantidade);
+                    comando.Parameters.AddWithValue("@situacao", situacao ? 'A' : 'I');
+                    comando.Parameters.AddWithValue("@dataEntrega", data);
+
+                    comando.ExecuteScalar();
+                }
+            }
+        }
+
         public static void alteraFuncionarioBD(long id, string nome, string cpf, bool situacao)
         {
             try
@@ -169,7 +273,53 @@ namespace TicketChecker
             }
         }
 
-        public static List<Funcionario> buscaFuncionariosNome(String nome)
+        public static void alteraTicketBD(int id, int idFuncionario, int quantidade, bool situacao, DateTime dataEntrega)
+        {
+            try
+            {
+                using (NpgsqlConnection conexao = new NpgsqlConnection(conexaoString))
+                {
+                    conexao.Open();
+
+                    string sql = @"
+                        UPDATE ticket 
+                            SET idFuncionario = @idFuncionario,
+                                quantidade = @quantidade,
+                                situacao = @situacao,
+                                dataEntrega = @dataEntrega
+                            WHERE id = @id;";
+
+                    using (NpgsqlCommand comando = new NpgsqlCommand(sql, conexao))
+                    {
+                        comando.Parameters.AddWithValue("@id", id);
+                        comando.Parameters.AddWithValue("@idFuncionario", idFuncionario);
+                        comando.Parameters.AddWithValue("@quantidade", quantidade);
+                        comando.Parameters.AddWithValue("@situacao", situacao ? 'A' : 'I');
+                        comando.Parameters.AddWithValue("@dataEntrega", dataEntrega);
+
+                        int rows = comando.ExecuteNonQuery();
+
+                        if (rows > 0)
+                        {
+                            MessageBox.Show("Registro atualizado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            return;
+                        }
+                        else
+                        {
+                            MessageBox.Show("Nenhum registro foi atualizado.", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show($"Erro ao atualizar: {e.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+        }
+
+        public static List<Funcionario> buscaFuncionariosNomeBD(String nome)
         {
             List<Funcionario> retorno = new List<Funcionario>();
 
@@ -178,7 +328,7 @@ namespace TicketChecker
                 conexao.Open();
 
                 string sql = @"
-                    SELECT id, nome 
+                    SELECT id, nome, cpf 
                         FROM funcionario 
                         WHERE nome ILIKE @nomeBusca
                         ORDER BY nome;";
@@ -192,7 +342,7 @@ namespace TicketChecker
                     {
                         while (reader.Read())
                         {
-                            retorno.Add(new Funcionario((int)reader["id"], (string)reader["nome"]));
+                            retorno.Add(new Funcionario((int)reader["id"], (string)reader["nome"], (string)reader["cpf"]));
                         }
                     }
                 }
@@ -222,6 +372,34 @@ namespace TicketChecker
                     {
                         reader.Read();
                         return new Funcionario((int)reader["id"], (string)reader["nome"], (string)reader["cpf"], ((string)reader["situacao"]).ToCharArray()[0], (DateTime)reader["dataalteracao"]);
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public static Ticket buscaTicketPorID(int id)
+        {
+            using (NpgsqlConnection conexao = new NpgsqlConnection(conexaoString))
+            {
+                conexao.Open();
+
+                string sql = @"
+                    SELECT id, idfuncionario, quantidade, situacao, dataEntrega  
+                        FROM ticket 
+                        WHERE id=@id;";
+
+                using (NpgsqlCommand comando = new NpgsqlCommand(sql, conexao))
+                {
+
+                    comando.Parameters.AddWithValue("@id", id);
+
+                    using (var reader = comando.ExecuteReader())
+                    {
+                        reader.Read();
+                        return new Ticket((int)reader["id"], (int)reader["idFuncionario"], (int)reader["quantidade"], ((string)reader["situacao"]).ToCharArray()[0],
+                                (DateTime)reader["dataEntrega"]);
                     }
                 }
             }

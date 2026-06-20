@@ -32,14 +32,21 @@ namespace TicketChecker.Telas
                 this.textBoxData.Text = DateTime.Now.ToString();
 
                 // Funciona para saber o ID na criação do funcionário, mas pode incrementar o id sem precisar
-                idTemporario = Program.ObterProximoIdFuncionario();
+                idTemporario = Program.ObterProximoIdFuncionarioBD();
                 this.textBoxId.Text = idTemporario.ToString();
+                this.ShowDialog();
 
             }
             else
             {
                 this.labelMenuFuncionario.Text = "Editar os dados";
                 this.buttonBuscar.Visible = true;
+                buscaFuncionario = new TelaBuscaFuncionario(this);
+                buscaFuncionario.ShowDialog();
+                if (this.Enabled)
+                {
+                    this.ShowDialog();
+                }
             }
 
         }
@@ -107,17 +114,17 @@ namespace TicketChecker.Telas
 
         private void buscarFuncionarioClickListener(object sender, EventArgs e)
         {
-            buscaFuncionario = new TelaBuscaFuncionario(this);
-            buscaFuncionario.ShowDialog();
+            this.buscaFuncionario = new TelaBuscaFuncionario(this);
+            this.buscaFuncionario.ShowDialog();
         }
 
         private void onActivateForm(object sender, EventArgs e)
         {
             if (this.Enabled && !cadastro)
             {
-                idTemporario = buscaFuncionario.funcionarioSelecionado;
-                if (idTemporario == 0) this.Close();
-                funcionario = Program.buscaFuncinarioPorID(idTemporario);
+                this.idTemporario = this.buscaFuncionario.funcionarioSelecionado;
+                if (this.idTemporario == 0) this.Close();
+                this.funcionario = Program.buscaFuncinarioPorID(idTemporario);
                 this.textBoxId.Text = funcionario.id.ToString();
                 this.textBoxNome.Text = funcionario.nome;
                 this.textBoxCPF.Text = funcionario.CPF;
