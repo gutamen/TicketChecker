@@ -34,10 +34,7 @@ namespace TicketChecker.Telas
             List<String> temp = new List<string>();
             foreach (Ticket c in listaTicket)
             {
-                // ABSURDAMENTE ruim, somente para ficar mais rápido de fazer, o correto era um join
-                Funcionario temporario = Program.buscaFuncinarioPorID(c.idFuncionario);
-
-                String adiciona = temporario.nome;
+                String adiciona = c.funcionario.nome;
                 adiciona += " \tQuantiade de tickets :" + c.quantidade.ToString() + " \tEntregues em:" + c.dataEntrega.ToString();
                 temp.Add(adiciona);
             }

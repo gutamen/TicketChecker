@@ -6,6 +6,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TicketChecker.Modelo;
+using ClosedXML.Excel;
+using System.Data;
+using System.IO;
 
 namespace TicketChecker
 {
@@ -90,7 +93,12 @@ namespace TicketChecker
         }
 
 
-        public static List<Ticket> buscaTicketsBD()
+        // Ordenação pode variar entre:
+        // ID = 0
+        // Nome Funcionário = 1
+        // Data Entrega = 2
+        // Join para utilizar o nome do funcionário na interface
+        public static List<Ticket> buscaTicketsBD(Funcionario funcionario = null, int order = 0, DateTime? inicial = null, DateTime? final = null)
         {
             List<Ticket> retorno = new List<Ticket>();
 
@@ -98,19 +106,65 @@ namespace TicketChecker
             {
                 conexao.Open();
 
+                bool dataUsada = false;
+
                 string sql = @"
-                    SELECT id, idfuncionario, quantidade, situacao, dataEntrega  
-                        FROM ticket;"; 
+                    SELECT t.id,
+                        t.idfuncionario,
+                        f.nome AS nomeFuncionario,
+                        f.cpf,
+                        t.quantidade,
+                        t.situacao AS situacaoTicket,
+                        t.dataEntrega
+                        FROM ticket t
+                        JOIN funcionario f ON t.idfuncionario = f.id";
+
+                if(inicial != null && final != null)
+                {
+                    dataUsada = true;
+                    sql += " WHERE dataEntrega BETWEEN '" + inicial.ToString() + "' AND '" + final.ToString() + "'";
+                }
+                else if(inicial != null)
+                {
+                    dataUsada = true;
+                    sql += " WHERE dataEntrega >= '" + inicial.ToString() + "'";
+                }
+                else if(final != null)
+                {
+                    dataUsada = true;
+                    sql += " WHERE dataEntrega <= '" + final.ToString() + "'";
+                }
+
+                // Se a data for utilizada a cláusula WHERE não é inserida novamente
+                if (funcionario != null)
+                {
+                    sql += dataUsada ? "" : "WHERE" + " idFuncionario=" + funcionario.id.ToString();   
+                }
+
+                switch (order)
+                {
+                    case 0:
+                        sql += " ORDER BY id asc";
+                        break;
+                    case 1:
+                        sql += " ORDER BY nomeFuncionario";
+                        break;
+                    case 2:
+                        sql += " ORDER BY dataEntrega";
+                        break;
+                }
+
+                sql += ";";
 
                 using (NpgsqlCommand comando = new NpgsqlCommand(sql, conexao))
                 {
-
+                    //Console.WriteLine(sql);
                     using (var reader = comando.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            retorno.Add(new Ticket((int)reader["id"], (int)reader["idFuncionario"], (int)reader["quantidade"], ((string)reader["situacao"]).ToCharArray()[0],
-                                (DateTime)reader["dataEntrega"]));
+                            retorno.Add(new Ticket((int)reader["id"], (int)reader["idFuncionario"], (int)reader["quantidade"], ((string)reader["situacaoTicket"]).ToCharArray()[0],
+                                (DateTime)reader["dataEntrega"], new Funcionario((int)reader["idFuncionario"], (string)reader["nomeFuncionario"], (string)reader["cpf"])));
                         }
                     }
                 }
@@ -405,6 +459,76 @@ namespace TicketChecker
             }
 
             return null;
+        }
+
+        public static void gerarRelatorioTickets(List<Ticket> tickets, string tituloRelatorio = "Relatório de Tickets")
+        {
+            if (tickets == null || tickets.Count == 0)
+            {
+                MessageBox.Show("A lista de tickets está vazia!", "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            try
+            {
+                using (var workbook = new XLWorkbook())
+                {
+                    var worksheet = workbook.Worksheets.Add("Tickets");
+
+                    // Titúlo
+                    worksheet.Cell("A1").Value = tituloRelatorio;
+                    worksheet.Cell("A1").Style.Font.Bold = true;
+                    worksheet.Cell("A1").Style.Font.FontSize = 14;
+
+                    // Organizar colunas
+                    worksheet.Cell("A3").Value = "Ticket ID";
+                    worksheet.Cell("B3").Value = "ID Funcionário";
+                    worksheet.Cell("C3").Value = "Funcionário";
+                    worksheet.Cell("D3").Value = "CPF";
+                    worksheet.Cell("E3").Value = "Quantidade";
+                    worksheet.Cell("F3").Value = "Situação";
+                    worksheet.Cell("G3").Value = "Data de Entrega";
+
+                    // Colorir células
+                    var headerRange = worksheet.Range("A3:F3");
+                    headerRange.Style.Font.Bold = true;
+                    headerRange.Style.Fill.BackgroundColor = XLColor.LightGray;
+
+                    // Preencher os com a lista de tickets
+                    int linha = 4;
+                    foreach (var ticket in tickets)
+                    {
+                        worksheet.Cell($"A{linha}").Value = ticket.id;
+                        worksheet.Cell($"B{linha}").Value = ticket.idFuncionario;
+                        worksheet.Cell($"C{linha}").Value = ticket.funcionario.nome;
+                        worksheet.Cell($"D{linha}").Value = ticket.funcionario.CPF;
+                        worksheet.Cell($"E{linha}").Value = ticket.quantidade;
+                        worksheet.Cell($"F{linha}").Value = ticket.situacao == 'A' ? "Ativo" : "Inativo";
+                        worksheet.Cell($"G{linha}").Value = ticket.dataEntrega;
+                        worksheet.Cell($"G{linha}").Style.DateFormat.Format = "dd/MM/yyyy";
+
+                        linha++;
+                    }
+
+                    
+                    worksheet.Columns().AdjustToContents();
+
+                    // Nome do arquivo, salvo na área de trabalho
+                    string nomeArquivo = $"Relatorio_Tickets_{DateTime.Now:yyyyMMdd_HHmmss}.xlsx";
+                    string caminhoCompleto = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Desktop), nomeArquivo);
+
+                    workbook.SaveAs(caminhoCompleto);
+
+                    MessageBox.Show($"Relatório gerado com sucesso!\n\nArquivo salvo em:\n{caminhoCompleto}",
+                                    "Sucesso",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception e)
+            {
+                MessageBox.Show($"Erro ao gerar relatório: {e.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
 
     }

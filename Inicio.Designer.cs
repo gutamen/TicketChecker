@@ -138,6 +138,7 @@
             this.gerarRelatorio.TabIndex = 5;
             this.gerarRelatorio.Text = "Gerar Relatório";
             this.gerarRelatorio.UseVisualStyleBackColor = true;
+            this.gerarRelatorio.Click += new System.EventHandler(this.relatorioClickListener);
             // 
             // Inicio
             // 

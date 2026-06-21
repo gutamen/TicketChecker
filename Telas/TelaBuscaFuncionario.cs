@@ -51,7 +51,7 @@ namespace TicketChecker.Telas
 
         private void onClose(object sender, FormClosedEventArgs e)
         {
-            if (tela.GetType() == typeof(TelaManipulacaoTicket))
+            if (tela.GetType() == typeof(TelaManipulacaoTicket) || tela.GetType() == typeof(TelaRelatorio))
             {
                 this.tela.Enabled = true;
                 return;

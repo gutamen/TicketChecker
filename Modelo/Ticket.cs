@@ -13,14 +13,16 @@ namespace TicketChecker.Modelo
         public int quantidade { get; set; }
         public char situacao { get; set; }
         public DateTime dataEntrega { get; set; }
+        public Funcionario funcionario { get; set; }
 
-        public Ticket(int id, int idFuncionario, int quantidade, char situacao, DateTime dataEntrega)
+        public Ticket(int id, int idFuncionario, int quantidade, char situacao, DateTime dataEntrega, Funcionario funcionario = null)
         {
             this.id = id;
             this.idFuncionario = idFuncionario;
             this.quantidade = quantidade;
             this.situacao = situacao;
             this.dataEntrega = dataEntrega;
+            this.funcionario = funcionario;
         }
     }
 }

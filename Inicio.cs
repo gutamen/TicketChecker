@@ -41,7 +41,13 @@ namespace TicketChecker
         {
             TelaManipulacaoTicket cadastro = new TelaManipulacaoTicket("Cadastrar Ticket", true);
         }
-        
+
+        private void relatorioClickListener(object sender, EventArgs e)
+        {
+            TelaRelatorio relatorio = new TelaRelatorio();
+        }
+
+
 
     }
 }
