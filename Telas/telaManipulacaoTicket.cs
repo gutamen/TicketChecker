@@ -22,6 +22,7 @@ namespace TicketChecker.Telas
         private int idFuncionarioTemporario = 0;
         private TelaBuscaFuncionario buscaFuncionario;
         private TelaBuscaTicket buscaTicket;
+        private SelecaoData calendario;
         public TelaManipulacaoTicket(String nomeTela, bool cadastro = false)
         {
 
@@ -74,7 +75,7 @@ namespace TicketChecker.Telas
             else
             {
                 Program.alteraTicketBD(this.idTemporario, Convert.ToInt32(this.textBoxFuncionarioID.Text.ToString()),
-                    Convert.ToInt32(this.upDownQuantidade.Value), checkBoxAtivo.Checked, DateTime.Now);
+                    Convert.ToInt32(this.upDownQuantidade.Value), checkBoxAtivo.Checked, DateTime.Parse(this.textBoxData.Text));
             }
             this.Close();
         }
@@ -101,7 +102,7 @@ namespace TicketChecker.Telas
                 funcionario = Program.buscaFuncinarioPorID(ticket.idFuncionario);
                 //this.textBoxFuncionarioID.Text = funcionario.id.ToString();
                 this.textBoxFuncionarioNome.Text = funcionario.nome;
-                this.textBoxData.Text = DateTime.Now.ToString();
+                this.textBoxData.Text = ticket.dataEntrega.ToString();
 
             }
             else if (this.selecaoFuncionario)
@@ -117,6 +118,14 @@ namespace TicketChecker.Telas
                 this.idFuncionarioTemporario = 0;
             }
 
+        }
+
+        private void selectDataClick(object sender, EventArgs e)
+        {
+            
+            calendario = new SelecaoData();
+            this.textBoxData.Text = calendario.dataSelecionada.ToString();
+            
         }
     }
 }

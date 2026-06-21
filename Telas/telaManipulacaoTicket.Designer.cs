@@ -46,6 +46,7 @@
             this.buttonRetroceder = new System.Windows.Forms.Button();
             this.buttonConfirmar = new System.Windows.Forms.Button();
             this.buttonBuscarTicket = new System.Windows.Forms.Button();
+            this.buttonData = new System.Windows.Forms.Button();
             this.ticketPanel.SuspendLayout();
             this.subpanelFuncionario.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.upDownQuantidade)).BeginInit();
@@ -72,6 +73,7 @@
             this.ticketPanel.Controls.Add(this.buttonRetroceder, 0, 6);
             this.ticketPanel.Controls.Add(this.buttonConfirmar, 2, 6);
             this.ticketPanel.Controls.Add(this.buttonBuscarTicket, 2, 1);
+            this.ticketPanel.Controls.Add(this.buttonData, 2, 5);
             this.ticketPanel.Dock = System.Windows.Forms.DockStyle.Fill;
             this.ticketPanel.Location = new System.Drawing.Point(0, 0);
             this.ticketPanel.Name = "ticketPanel";
@@ -291,6 +293,20 @@
             this.buttonBuscarTicket.Text = "Buscar";
             this.buttonBuscarTicket.UseVisualStyleBackColor = true;
             // 
+            // buttonData
+            // 
+            this.buttonData.AutoSize = true;
+            this.buttonData.Dock = System.Windows.Forms.DockStyle.Top;
+            this.buttonData.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.buttonData.Location = new System.Drawing.Point(525, 384);
+            this.buttonData.MaximumSize = new System.Drawing.Size(40, 0);
+            this.buttonData.Name = "buttonData";
+            this.buttonData.Size = new System.Drawing.Size(40, 34);
+            this.buttonData.TabIndex = 16;
+            this.buttonData.Text = "🔍";
+            this.buttonData.UseVisualStyleBackColor = true;
+            this.buttonData.Click += new System.EventHandler(this.selectDataClick);
+            // 
             // TelaManipulacaoTicket
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -329,5 +345,6 @@
         private System.Windows.Forms.Button buttonAlterarFuncionario;
         private System.Windows.Forms.TextBox textBoxFuncionarioNome;
         private System.Windows.Forms.Button buttonBuscarTicket;
+        private System.Windows.Forms.Button buttonData;
     }
 }

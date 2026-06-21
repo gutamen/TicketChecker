@@ -108,3 +108,22 @@ COMMENT ON COLUMN ticket.idFuncionario IS 'Funcionário quem recebeu os tickets'
 COMMENT ON COLUMN ticket.quantidade IS 'Quantidade de tickets entregues';
 COMMENT ON COLUMN ticket.situacao IS 'Situação do registro: A = Ativo, I = Inativo';
 COMMENT ON COLUMN ticket.dataEntrega IS 'Data da entrega dos tickets';
+
+-- dados teste
+INSERT into funcionario(nome, cpf, dataalteracao) values ('afonso roberto', '12345678901', '10-05-2025');
+INSERT into funcionario(nome, cpf, dataalteracao) values ('ali abreu', '12345638901', '10-05-2026');
+INSERT into funcionario(nome, cpf, dataalteracao) values ('bob loco', '12345675901', '10-05-2024');
+INSERT into funcionario(nome, cpf, dataalteracao) values ('adolfo', '12345678101', '10-12-2025');
+INSERT into funcionario(nome, cpf, dataalteracao) values ('vilson nola', '14345678901', '01-05-2025');
+INSERT into funcionario(nome, cpf, dataalteracao) values ('cassio', '12945678901', '10-01-2025');
+INSERT into funcionario(nome, cpf, dataalteracao) values ('bruno aa', '16345678901', '10-11-2025');
+INSERT into funcionario(nome, cpf, dataalteracao) values ('jakso', '12344678901', '10-05-2022');
+
+insert into ticket(idFuncionario, quantidade, dataEntrega) values ('1', 32, '21-06-2026');
+insert into ticket(idFuncionario, quantidade, dataEntrega) values ('1', 12, '21-06-2026');
+insert into ticket(idFuncionario, quantidade, dataEntrega) values ('1', 62, '21-05-2026');
+insert into ticket(idFuncionario, quantidade, dataEntrega) values ('5', 32, '21-06-2026');
+insert into ticket(idFuncionario, quantidade, dataEntrega) values ('5', 32, '21-04-2026');
+insert into ticket(idFuncionario, quantidade, dataEntrega) values ('5', 52, '21-06-2026');
+insert into ticket(idFuncionario, quantidade, dataEntrega) values ('5', 22, '21-06-2026');
+insert into ticket(idFuncionario, quantidade, dataEntrega) values ('5', 12, '21-03-2026');

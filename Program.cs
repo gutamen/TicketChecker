@@ -122,35 +122,35 @@ namespace TicketChecker
                 if(inicial != null && final != null)
                 {
                     dataUsada = true;
-                    sql += " WHERE dataEntrega BETWEEN '" + inicial.ToString() + "' AND '" + final.ToString() + "'";
+                    sql += " WHERE t.dataEntrega BETWEEN '" + inicial.ToString() + "' AND '" + final.ToString() + "'";
                 }
                 else if(inicial != null)
                 {
                     dataUsada = true;
-                    sql += " WHERE dataEntrega >= '" + inicial.ToString() + "'";
+                    sql += " WHERE t.dataEntrega >= '" + inicial.ToString() + "'";
                 }
                 else if(final != null)
                 {
                     dataUsada = true;
-                    sql += " WHERE dataEntrega <= '" + final.ToString() + "'";
+                    sql += " WHERE t.dataEntrega <= '" + final.ToString() + "'";
                 }
 
                 // Se a data for utilizada a cláusula WHERE não é inserida novamente
                 if (funcionario != null)
                 {
-                    sql += dataUsada ? "" : "WHERE" + " idFuncionario=" + funcionario.id.ToString();   
+                    sql += (dataUsada ? " AND " : " WHERE") + " t.idFuncionario = " + funcionario.id.ToString();   
                 }
 
                 switch (order)
                 {
                     case 0:
-                        sql += " ORDER BY id asc";
+                        sql += " ORDER BY t.id asc";
                         break;
                     case 1:
                         sql += " ORDER BY nomeFuncionario";
                         break;
                     case 2:
-                        sql += " ORDER BY dataEntrega";
+                        sql += " ORDER BY t.dataEntrega";
                         break;
                 }
 
@@ -158,7 +158,8 @@ namespace TicketChecker
 
                 using (NpgsqlCommand comando = new NpgsqlCommand(sql, conexao))
                 {
-                    //Console.WriteLine(sql);
+                    //Console.WriteLine(funcionario);
+                    Console.WriteLine(sql);
                     using (var reader = comando.ExecuteReader())
                     {
                         while (reader.Read())
@@ -510,7 +511,14 @@ namespace TicketChecker
                         linha++;
                     }
 
-                    
+                    worksheet.Cell($"D{linha + 1}").Value = "TOTAL GERAL:";
+                    worksheet.Cell($"D{linha + 1}").Style.Font.Bold = true;
+
+                    // Fórmula SUM
+                    worksheet.Cell($"E{linha + 1}").FormulaA1 = $"=SUM(E4:E{linha - 1})";
+                    worksheet.Cell($"E{linha + 1}").Style.Font.Bold = true;
+                    worksheet.Cell($"E{linha + 1}").Style.Font.FontSize = 12;
+
                     worksheet.Columns().AdjustToContents();
 
                     // Nome do arquivo, salvo na área de trabalho

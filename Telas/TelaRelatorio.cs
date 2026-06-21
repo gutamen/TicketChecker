@@ -27,7 +27,7 @@ namespace TicketChecker.Telas
         private void selectDataClick(object sender, EventArgs e)
         {
             Button b = (Button)sender;
-            Console.WriteLine(b.Name);
+            //Console.WriteLine(b.Name);
             if(b.Name == "buttonDataInicial")
             {
                 calendario = new SelecaoData();
